@@ -1,0 +1,44 @@
+<p>sign-up works!</p>
+<!--<div>-->
+<!--  <h2>SignUp</h2>-->
+<!--  <input type="text" #emailSignUp>-->
+<!--  <input type="text" #passwordSignUp>-->
+<!--  <button (click)="onSignUp(emailSignUp.value, passwordSignUp.value)">SignUp</button>-->
+<!--</div>-->
+<div class="signup-wrapper">
+  <div class="card">
+    <div class="card-body">
+      <!--      <form class="form-signin" (ngSubmit)="onSubmit(signInForm)" #signInForm="ngForm">-->
+      <form class="form-signup">
+        <h1 class="h3 mb-3 fw-normal">Please sign Up</h1>
+
+        <div class="form-floating">
+          <input
+            type="email"
+            class="form-control"
+            name="email"
+            id="floatingInput"
+            placeholder="name@example.com"
+            #emailSignUp>
+          <label for="floatingInput">Email address</label>
+        </div>
+        <div class="form-floating">
+          <input
+            type="password"
+            class="form-control"
+            name="password"
+            id="floatingPassword"
+            placeholder="Password"
+            #passwordSignUp
+          >
+          <label for="floatingPassword">Password</label>
+        </div>
+        <button
+          class="w-100 btn btn-lg btn-primary"
+          (click)="onSignUp(emailSignUp.value, passwordSignUp.value)"
+        >Sign up</button>
+        <p>Already have an account?<a href="#" routerLink="/sign-in">Sign in</a></p>
+      </form>
+    </div>
+  </div>
+</div>

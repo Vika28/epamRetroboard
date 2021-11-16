@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "fir-retroboard": {
+      "hosting": {
+        "epamRetroboard1": [
+          "fir-retroboard"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "fir-retroboard"
+  }
+}

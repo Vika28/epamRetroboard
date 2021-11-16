@@ -1,0 +1,47 @@
+<p>sign-in works!</p>
+<!--<div>-->
+<!--  <h2>SignIn</h2>-->
+<!--  <input type="text" #emailSignIn>-->
+<!--  <input type="text" #passwordSignIn>-->
+<!--  <button (click)="onSignIn(emailSignIn.value, passwordSignIn.value)">SignIn</button>-->
+<!--</div>-->
+<div class="signin-wrapper">
+  <div class="card">
+    <div class="card-body">
+<!--      <form class="form-signin" (ngSubmit)="onSubmit(signInForm)" #signInForm="ngForm">-->
+      <form class="form-signin">
+        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+        <div class="form-floating">
+          <input
+            type="email"
+            class="form-control"
+            name="email"
+            id="floatingInput"
+            placeholder="name@example.com"
+            #emailSignIn>
+          <label for="floatingInput">Email address</label>
+        </div>
+        <div class="form-floating">
+          <input
+            type="password"
+            class="form-control"
+            name="password"
+            id="floatingPassword"
+            placeholder="Password"
+            #passwordSignIn
+          >
+          <label for="floatingPassword">Password</label>
+        </div>
+        <button
+          class="w-100 btn btn-lg btn-primary"
+          (click)="onSignIn(emailSignIn.value, passwordSignIn.value)"
+        >Sign in</button>
+        <p>New in RETROBOARD? <a href="#" routerLink="/sign-up">sign up</a></p>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
