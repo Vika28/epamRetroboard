@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
 import {FormsModule} from "@angular/forms";
-import { BoardComponent } from './components/board/board.component';
+import { BoardComponent } from './components/board/board/board.component';
 import { AppRoutingModule } from "./app-routing.module";
 
 import { AngularFireModule } from "@angular/fire/compat";
@@ -13,14 +13,21 @@ import { SignInComponent } from './components/sign-in/sign-in.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import {FirebaseService} from "./services/firebase.service";
 import { StartPageComponent } from './components/start-page/start-page.component';
+import { LogoutComponent } from './components/logout/logout.component';
+import {DragDropModule} from "@angular/cdk/drag-drop";
+import {CommonModule} from "@angular/common";
+import {BoardService} from "./services/board.service";
+import {BoardModule} from "./components/board/board.module";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BoardComponent,
+    // BoardComponent,
     SignInComponent,
     SignUpComponent,
-    StartPageComponent
+    StartPageComponent,
+    // LogoutComponent
   ],
   imports: [
     BrowserModule,
@@ -29,8 +36,12 @@ import { StartPageComponent } from './components/start-page/start-page.component
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
+    DragDropModule,
+    CommonModule,
+    BoardModule,
+    BrowserAnimationsModule
   ],
-  providers: [FirebaseService],
+  providers: [FirebaseService, BoardService],
   // providers: [],
   bootstrap: [AppComponent]
 })

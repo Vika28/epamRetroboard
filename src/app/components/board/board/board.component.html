@@ -1,0 +1,64 @@
+<div class="container-fluid">
+  <app-logout></app-logout>
+  <hr>
+  <div cdkDropListGroup class="row">
+    <div
+      class="col-4"
+      *ngFor="let col of boardService.getBoard$() | async"
+    >
+      <h2>{{col.title}}</h2>
+
+      <div
+        cdkDropList
+        [cdkDropListData]="col.list"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)"
+      >
+          <div
+            cdkDrag
+            class="example-box"
+            [ngStyle]="{background: col.color}"
+
+            *ngFor="let item of col.list"
+          >
+            <app-board-item
+              [item]="item"
+              (emitText)="onAddComment($event, col.id)"
+            >
+              <div *ngFor="let comment of item.comments">
+                <app-comment-item
+                  [comment]="comment"
+                  (emitComment)="onDeleteComment($event, col.id, item)"
+                ></app-comment-item>
+              </div>
+            </app-board-item>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--<p>board works!</p>-->
+<!--<app-logout></app-logout>-->
+<!--<hr>-->
+<!--<div cdkDropListGroup class="d-flex">-->
+<!--  &lt;!&ndash; All lists in here will be connected. &ndash;&gt;-->
+<!--  <div cdkDropList-->
+<!--       *ngFor="let list of data"-->
+<!--       [cdkDropListData]="list"-->
+<!--       class="example-list"-->
+<!--       (cdkDropListDropped)="drop($event)">-->
+
+<!--  >-->
+<!--    <div class="example-container">-->
+<!--      <h2>Done</h2>-->
+
+<!--      <div-->
+<!--        cdkDrag-->
+<!--        [cdkDragData]="item"-->
+<!--        class="example-box"-->
+<!--        *ngFor="let item of list">-->
+<!--        {{item}}-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->

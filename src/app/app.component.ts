@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {BoardService} from "./services/board.service";
 
 @Component({
   selector: 'app-root',
@@ -10,6 +11,5 @@ export class AppComponent  {
   isLoggedIn = false;
 
   constructor() { }
-
 
 }
