@@ -12,13 +12,15 @@ import { environment } from '../environments/environment';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import {FirebaseService} from "./services/firebase.service";
+import { StartPageComponent } from './components/start-page/start-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BoardComponent,
     SignInComponent,
-    SignUpComponent
+    SignUpComponent,
+    StartPageComponent
   ],
   imports: [
     BrowserModule,

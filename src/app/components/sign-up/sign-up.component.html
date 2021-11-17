@@ -14,6 +14,16 @@
 
         <div class="form-floating">
           <input
+            type="text"
+            class="form-control"
+            name="name"
+            placeholder="name"
+            #name>
+          <label for="floatingInput">Your name</label>
+        </div>
+
+        <div class="form-floating">
+          <input
             type="email"
             class="form-control"
             name="email"
@@ -35,9 +45,16 @@
         </div>
         <button
           class="w-100 btn btn-lg btn-primary"
-          (click)="onSignUp(emailSignUp.value, passwordSignUp.value)"
+          (click)="onSignUp(emailSignUp.value, passwordSignUp.value, name.value)"
         >Sign up</button>
         <p>Already have an account?<a href="#" routerLink="/sign-in">Sign in</a></p>
+        <div class="alert alert-danger" *ngIf="isFormInvalid">
+          Please fill all fields
+        </div>
+
+        <div class="alert alert-danger" *ngIf="isCredentialInvalid">
+          Invalid username or password
+        </div>
       </form>
     </div>
   </div>

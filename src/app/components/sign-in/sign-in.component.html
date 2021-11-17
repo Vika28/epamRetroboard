@@ -9,7 +9,7 @@
   <div class="card">
     <div class="card-body">
 <!--      <form class="form-signin" (ngSubmit)="onSubmit(signInForm)" #signInForm="ngForm">-->
-      <form class="form-signin">
+      <form class="form-signin" #signInForm="ngForm">
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
         <div class="form-floating">
@@ -38,6 +38,14 @@
           (click)="onSignIn(emailSignIn.value, passwordSignIn.value)"
         >Sign in</button>
         <p>New in RETROBOARD? <a href="#" routerLink="/sign-up">sign up</a></p>
+      <div class="alert alert-danger" *ngIf="isFormInvalid">
+        Please fill all fields
+      </div>
+
+        <div class="alert alert-danger" *ngIf="isCredentialInvalid">
+          Invalid username or password
+        </div>
+
       </form>
     </div>
   </div>

@@ -18,16 +18,20 @@ export class FirebaseService {
         this.isLoggedIn = false;
       })
   }
-  async signUp(email: string, password: string){
+  async signUp(email: string, password: string, userName: string){
     await this.firebaseAuth.createUserWithEmailAndPassword(email,password)
       .then(res => {
         this.isLoggedIn = true;
         localStorage.setItem('user', JSON.stringify(res.user));
+        if(res.user){
+          res.user.updateProfile({
+            displayName: userName// some displayName,
+        })
+        }
       })
       .catch(err => {
         console.log(err);
         this.isLoggedIn = false;
-
       })
   }
 

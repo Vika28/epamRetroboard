@@ -10,17 +10,20 @@ import {AngularFireAuth} from "@angular/fire/compat/auth";
 export class AuthGuard implements CanActivate {
 
   // constructor(private firebaseService: FirebaseService) { }
+  private isSignedIn: boolean | undefined;
   constructor(private afAuth: AngularFireAuth, private router: Router) { }
   async canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot):  Promise<boolean | UrlTree> {
-    const user = await this.afAuth.currentUser;
-    const isAuthenticated = user ? true : false;
+    let isAuthorized = localStorage.getItem('user') !== null;
     //route to sign in because unAuthorize
-    if(!isAuthenticated){
+    if(isAuthorized){
+      this.isSignedIn = true;
+    } else {
       this.router.navigate(['sign-in']);
+      return false;
     }
-    return isAuthenticated;
+    return isAuthorized;
   }
 
 }
