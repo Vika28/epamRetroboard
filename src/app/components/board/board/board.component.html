@@ -1,13 +1,49 @@
 <div class="container-fluid">
   <app-logout></app-logout>
+  <div>
+    <app-dialog
+      (emitText) = addColumn($event)
+      question="Add new column"
+    >
+      <button
+        mat-raised-button
+        color="primary"
+      >
+        New column
+      </button>
+    </app-dialog>
+  </div>
   <hr>
   <div cdkDropListGroup class="row">
     <div
-      class="col-4"
+      class="col-sm-6 col-lg-3 mb-3"
       *ngFor="let col of boardService.getBoard$() | async"
     >
-      <h2>{{col.title}}</h2>
+      <div
+        class="d-flex justify-content-between align-items-center p-2 shadow-sm column-header"
+      >
+        <h2 class="m-0">{{col.title}}</h2>
+        <button
+          mat-icon-button
+          class="icon-delete"
+          (click)="onDeleteColumn(col.id)"
+        >
+          <mat-icon style="font-size: 20px;">delete</mat-icon>
+        </button>
+      </div>
 
+      <app-dialog
+        (emitText)="onAddCard($event, col.id)"
+        [question]="'Add new card in ' + col.title + 'column'"
+      >
+        <button
+          mat-raised-button
+          class="w-100 ,b-1 btn-add">+</button>
+      </app-dialog>
+
+      <app-color-panel
+        (emitColor)="onColorChange($event, col.id)"
+      ></app-color-panel>
       <div
         cdkDropList
         [cdkDropListData]="col.list"
@@ -24,6 +60,8 @@
             <app-board-item
               [item]="item"
               (emitText)="onAddComment($event, col.id)"
+              (emitCardItem)="onChangeLike($event, col.id)"
+              (emitDeleteCard)="onDeleteCard($event, col.id)"
             >
               <div *ngFor="let comment of item.comments">
                 <app-comment-item

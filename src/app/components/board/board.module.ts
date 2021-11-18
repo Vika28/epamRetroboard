@@ -11,6 +11,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatExpansionModule } from '@angular/material/expansion';
 import {FormsModule} from "@angular/forms";
 import { CommentItemComponent } from './comment-item/comment-item.component';
+import {DialogModule} from "../dialog/dialog.module";
+import { ColorPanelComponent } from './color-panel/color-panel.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,7 @@ import { CommentItemComponent } from './comment-item/comment-item.component';
     BoardComponent,
     BoardItemComponent,
     CommentItemComponent,
+    ColorPanelComponent,
   ],
   imports: [
     CommonModule,
@@ -27,7 +30,8 @@ import { CommentItemComponent } from './comment-item/comment-item.component';
     MatButtonModule,
     DragDropModule,
     MatExpansionModule,
-    FormsModule
+    FormsModule,
+    DialogModule
   ],
   exports: [
     BoardComponent

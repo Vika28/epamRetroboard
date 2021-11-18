@@ -19,6 +19,7 @@ import {CommonModule} from "@angular/common";
 import {BoardService} from "./services/board.service";
 import {BoardModule} from "./components/board/board.module";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {DialogModule} from "./components/dialog/dialog.module";
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     DragDropModule,
     CommonModule,
     BoardModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    DialogModule
   ],
   providers: [FirebaseService, BoardService],
   // providers: [],
