@@ -2,6 +2,7 @@ import {Component, NgModule, OnInit} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {BoardService} from "../../../services/board.service";
 import {CommonModule} from "@angular/common";
+import {FirebaseService} from "../../../services/firebase.service";
 /**
  * @title Drag&Drop connected sorting
  */
@@ -16,12 +17,14 @@ import {CommonModule} from "@angular/common";
 export class BoardComponent {
 
   constructor(
-    public boardService: BoardService
+    public boardService: BoardService,
+    public firebaseService: FirebaseService
   ) {
   }
   addColumn(event: string) {
     if(event){
       this.boardService.addColumn(event);
+      this.firebaseService.addColumnToFirestore(event);
     }
   }
   onDeleteCard(cardId: number, columnId: number) {
@@ -40,9 +43,10 @@ export class BoardComponent {
   onDeleteColumn(columnId: number) {
     this.boardService.deleteColumn(columnId)
   }
-  onAddCard(text: string, columnId: number) {
-    if(text) {
-      this.boardService.addCard(text, columnId);
+  onAddCard(cardName: string, columnId: number, columnName: string) {
+    if(cardName) {
+      this.boardService.addCard(cardName, columnId);
+      this.firebaseService.addCardToColumnFirestore(columnName, cardName);
     }
   }
   onColorChange(color: string, columnId:number) {

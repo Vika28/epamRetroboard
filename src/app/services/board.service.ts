@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 import {Card, Column, Comment} from "../components/models/column.model";
+import {FirebaseService} from "./firebase.service";
 
 @Injectable({
   providedIn: 'root'
@@ -93,6 +94,8 @@ export class BoardService {
   //     ]
   //   }
   // ]
+  // constructor(private boardService: BoardService, private firebaseService: FirebaseService) { }
+
   private board: any[] = this.initBoard;
   private board$ = new BehaviorSubject<any[]>(this.initBoard);
   getBoard$(){
@@ -127,6 +130,7 @@ export class BoardService {
     this.board$.next([...this.board]);
   }
   addColumn(title: string) {
+    // this.firebaseService.addColumnToFirestore(title);
     const newColumn: any = {
       id: Date.now(),
       title: title,
@@ -204,5 +208,4 @@ export class BoardService {
     });
     this.board$.next([...this.board]);
   }
-  constructor() { }
 }

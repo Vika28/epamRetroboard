@@ -33,7 +33,7 @@
       </div>
 
       <app-dialog
-        (emitText)="onAddCard($event, col.id)"
+        (emitText)="onAddCard($event, col.id, col.title)"
         [question]="'Add new card in ' + col.title + 'column'"
       >
         <button
