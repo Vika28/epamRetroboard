@@ -79,6 +79,32 @@ export class FirebaseService {
     let currentColumnRef = this.firebaseFirestore.doc(`board/${columnName}`);
     await currentColumnRef.delete();
   }
+  async deleteCardFromColumnFirestore(columnName: string, cardName: string) {
+    let currentColumnRef = this.firebaseFirestore.doc(`board/${columnName}`);
+    let columnCards: Array<{'cardName': string, 'id': number}>;
+    await currentColumnRef
+      .get()
+      .subscribe({
+        next(val) {
+          columnCards = val.get('allCards');
+          columnCards = columnCards.filter((card) => {
+            return cardName !== card.cardName;
+          })
+          console.log('columncards', columnCards);
+          currentColumnRef
+            .update({
+              allCards: [...columnCards],
+            });
+        },
+        error(err) {
+          console.error('something wrong occurred: ' + err);
+        },
+        complete() {
+          console.log('done');
+        }
+      }
+    );
+  }
   // async getUser() {
   //   const user = await this.firebaseAuth.currentUser;
   //   const isAuthenticated = user ? true : false;

@@ -26,7 +26,9 @@ export class BoardComponent {
       this.boardService.addColumn(event);
     }
   }
-  onDeleteCard(cardId: number, columnId: number) {
+  onDeleteCard(cardId: number, columnId: number, columnName: string, cardName: string) {
+    this.firebaseService.deleteCardFromColumnFirestore(columnName, cardName);
+    console.log('cardName', cardName);
     this.boardService.deleteCard(cardId, columnId);
   }
   onChangeLike(event: {card: any, increase: boolean}, columnId: number) {
