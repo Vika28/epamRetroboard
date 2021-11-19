@@ -42,27 +42,10 @@ export class FirebaseService {
       })
   }
 
-  async addColumnToFirestore(columnName: string) {
-    console.log('firebase servie work');
-    // await this.firebaseFirestore.collection(`board`).doc(`${columnName}`);
-    // try {
-    //   const docRef = await addDoc(collection( "users"), {
-    //     first: "Ada",
-    //     last: "Lovelace",
-    //     born: 1815
-    //   });
-    //   console.log("Document written with ID: ", docRef.id);
-    // } catch (e) {
-    //   console.error("Error adding document: ", e);
-    // }
-  }
   getUsername(uid : string) {
     return (this.firebaseFirestore.doc(`board/${uid}`).get())
   }
   async addCardToColumnFirestore(columnName: string, cardName: string) {
-    // await this.firebaseFirestore.collection(`board`).doc(`${columnName}`).set({
-    //   allCards: [{'cardName': cardName, 'id': Date.now()}],
-    // });
     let currentColumnRef = this.firebaseFirestore.doc(`board/${columnName}`);
     let columnCards: Array<{'cardName': string, 'id': number}>;
     await currentColumnRef
@@ -91,6 +74,10 @@ export class FirebaseService {
         }
       }
       );
+  }
+  async deleteColumnFromFirestore(columnName: string){
+    let currentColumnRef = this.firebaseFirestore.doc(`board/${columnName}`);
+    await currentColumnRef.delete();
   }
   // async getUser() {
   //   const user = await this.firebaseAuth.currentUser;

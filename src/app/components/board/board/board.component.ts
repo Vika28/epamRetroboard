@@ -24,7 +24,6 @@ export class BoardComponent {
   addColumn(event: string) {
     if(event){
       this.boardService.addColumn(event);
-      this.firebaseService.addColumnToFirestore(event);
     }
   }
   onDeleteCard(cardId: number, columnId: number) {
@@ -40,8 +39,9 @@ export class BoardComponent {
   onDeleteComment(comment: any, columnId: number, item: any){
     this.boardService.deleteComment(columnId, item.id, comment.id)
   }
-  onDeleteColumn(columnId: number) {
-    this.boardService.deleteColumn(columnId)
+  onDeleteColumn(columnId: number, columnName: string) {
+    this.firebaseService.deleteColumnFromFirestore(columnName);
+    this.boardService.deleteColumn(columnId);
   }
   onAddCard(cardName: string, columnId: number, columnName: string) {
     if(cardName) {
