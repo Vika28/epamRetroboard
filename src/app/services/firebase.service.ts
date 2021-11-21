@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import {AngularFireAuth} from "@angular/fire/compat/auth";
+import { map } from "rxjs/operators";
+
 import {
   AngularFirestore,
   AngularFirestoreDocument,
@@ -13,6 +15,25 @@ import {
 export class FirebaseService {
   isLoggedIn = false;
   constructor(public firebaseAuth: AngularFireAuth, public firebaseFirestore: AngularFirestore) {
+  }
+  getCollectionFormFirestore(){
+  // .pipe(map(res => res.json()));
+  //   let items: Array<
+  //     {name: string,
+  //     allCards: object}
+  //     > = [];
+  //   this.firebaseFirestore.collection("board")
+  //     .get()
+  //     .subscribe((ss) => {
+  //       ss.docs.forEach((doc) => {
+  //         items.push({
+  //                       name: doc.id,
+  //                       allCards: (doc.data() as {}),
+  //                     })
+  //       });
+  //       console.log('items', items);
+  //     });
+  //   return items;
   }
   async signIn(email: string, password: string){
     await this.firebaseAuth.signInWithEmailAndPassword(email,password)
@@ -45,26 +66,30 @@ export class FirebaseService {
   getUsername(uid : string) {
     return (this.firebaseFirestore.doc(`board/${uid}`).get())
   }
-  async addCardToColumnFirestore(columnName: string, cardName: string) {
-    let currentColumnRef = this.firebaseFirestore.doc(`board/${columnName}`);
-    let columnCards: Array<{'cardName': string, 'id': number}>;
+  async addCardToColumnFirestore(columnName: string, cardName: string, columnId: number) {
+    let currentColumnRef = this.firebaseFirestore.doc(`board/${columnId}`);
+    let columnCards: Array<{'id': number, 'text': string, 'like': number}>;
     await currentColumnRef
       .get()
       .subscribe( {
         next(val) {
-          columnCards = val.get('allCards');
+          columnCards = val.get('list');
           if(columnCards == undefined) {
             currentColumnRef
               .set({
-                  allCards: [{'cardName': cardName, 'id': Date.now()}],
+                  id: columnId,
+                  title: columnName,
+                  color: 'red',
+                  list: [{'id': Date.now(), 'text': cardName, 'like': 0}],
                 })
           } else {
+
             currentColumnRef
               .update({
-                allCards: [...columnCards, {'cardName': cardName, 'id': Date.now()}],
+                list: [...columnCards, {'id': Date.now(), 'text': cardName, 'like': 0}],
               })
           }
-          console.log('allCards', columnCards);
+          console.log('list', columnCards);
           },
         error(err) {
           console.error('something wrong occurred: ' + err);
@@ -75,25 +100,24 @@ export class FirebaseService {
       }
       );
   }
-  async deleteColumnFromFirestore(columnName: string){
-    let currentColumnRef = this.firebaseFirestore.doc(`board/${columnName}`);
+  async deleteColumnFromFirestore(columnId: number){
+    let currentColumnRef = this.firebaseFirestore.doc(`board/${columnId}`);
     await currentColumnRef.delete();
   }
-  async deleteCardFromColumnFirestore(columnName: string, cardName: string) {
-    let currentColumnRef = this.firebaseFirestore.doc(`board/${columnName}`);
-    let columnCards: Array<{'cardName': string, 'id': number}>;
+  async deleteCardFromColumnFirestore(columnId: number, cardId: number) {
+    let currentColumnRef = this.firebaseFirestore.doc(`board/${columnId}`);
+    let columnCards: Array<{'id': number, 'text': string, 'like': number}>;
     await currentColumnRef
       .get()
       .subscribe({
         next(val) {
-          columnCards = val.get('allCards');
+          columnCards = val.get('list');
           columnCards = columnCards.filter((card) => {
-            return cardName !== card.cardName;
+            return cardId !== card.id;
           })
-          console.log('columncards', columnCards);
           currentColumnRef
             .update({
-              allCards: [...columnCards],
+              list: [...columnCards],
             });
         },
         error(err) {
@@ -111,9 +135,9 @@ export class FirebaseService {
   //
   //   return isAuthenticated;
   // }
-    logout() {
-      this.firebaseAuth.signOut();
-      localStorage.removeItem('user');
-    }
+  logout() {
+    this.firebaseAuth.signOut();
+    localStorage.removeItem('user');
+  }
 
 }

@@ -3,6 +3,7 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 import {BoardService} from "../../../services/board.service";
 import {CommonModule} from "@angular/common";
 import {FirebaseService} from "../../../services/firebase.service";
+import {AngularFirestore} from "@angular/fire/compat/firestore";
 /**
  * @title Drag&Drop connected sorting
  */
@@ -14,22 +15,53 @@ import {FirebaseService} from "../../../services/firebase.service";
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.css']
 })
-export class BoardComponent {
+export class BoardComponent implements OnInit {
 
   constructor(
     public boardService: BoardService,
-    public firebaseService: FirebaseService
+    public firebaseService: FirebaseService,
+    public firebaseFirestore: AngularFirestore
   ) {
+  }
+
+  ngOnInit(): void {
+    console.log('onInitWorks');
+    let items: Array<
+      {id: number,
+        title: string,
+        list: {},
+        color: string}
+      > = [];
+    // let items: unknown;
+    this.firebaseFirestore.collection("board")
+      .get()
+      .subscribe((ss) => {
+        let docArr: unknown;
+
+        ss.docs.forEach((doc) => {
+
+          docArr = doc.data();
+          items.push({
+            id: doc.get('id'),
+            title: doc.get('title'),
+            list: doc.get('list'),
+            color: doc.get('color')
+          })
+        });
+      });
+    console.log(items);
+    this.boardService.generateInitBoard(items);
+
   }
   addColumn(event: string) {
     if(event){
       this.boardService.addColumn(event);
     }
   }
-  onDeleteCard(cardId: number, columnId: number, columnName: string, cardName: string) {
-    this.firebaseService.deleteCardFromColumnFirestore(columnName, cardName);
-    console.log('cardName', cardName);
-    this.boardService.deleteCard(cardId, columnId);
+  onDeleteCard(cardId: number, columnId: number, columnName: string, cardName: string, cardId1: number) {
+    this.firebaseService.deleteCardFromColumnFirestore(columnId, cardId1);
+    console.log('cardId', cardId);
+    this.boardService.deleteCard(cardId1, columnId);
   }
   onChangeLike(event: {card: any, increase: boolean}, columnId: number) {
     const {card: { id }, increase} = event;
@@ -42,13 +74,13 @@ export class BoardComponent {
     this.boardService.deleteComment(columnId, item.id, comment.id)
   }
   onDeleteColumn(columnId: number, columnName: string) {
-    this.firebaseService.deleteColumnFromFirestore(columnName);
+    this.firebaseService.deleteColumnFromFirestore(columnId);
     this.boardService.deleteColumn(columnId);
   }
   onAddCard(cardName: string, columnId: number, columnName: string) {
     if(cardName) {
       this.boardService.addCard(cardName, columnId);
-      this.firebaseService.addCardToColumnFirestore(columnName, cardName);
+      this.firebaseService.addCardToColumnFirestore(columnName, cardName, columnId);
     }
   }
   onColorChange(color: string, columnId:number) {

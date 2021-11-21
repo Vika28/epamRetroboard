@@ -1,13 +1,23 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 import {Card, Column, Comment} from "../components/models/column.model";
 import {FirebaseService} from "./firebase.service";
+import {AngularFirestore} from "@angular/fire/compat/firestore";
 
 @Injectable({
   providedIn: 'root'
 })
-export class BoardService {
+export class BoardService implements OnInit {
+  constructor(private firebaseService: FirebaseService,
+              public firebaseFirestore: AngularFirestore
+              ) { }
   private initBoard: Column[] = [];
+  private board: any[] = this.initBoard;
+  private board$ = new BehaviorSubject<any[]>(this.initBoard);
+  ngOnInit(): void {
+
+  }
+
   // private initBoard = [
   //   {
   //     id: 1,
@@ -96,21 +106,53 @@ export class BoardService {
   // ]
   // constructor(private boardService: BoardService, private firebaseService: FirebaseService) { }
 
-  private board: any[] = this.initBoard;
-  private board$ = new BehaviorSubject<any[]>(this.initBoard);
+
+  generateInitBoard( boardArg: any ) {
+    console.log(typeof boardArg);
+    console.log('arg', boardArg);
+    boardArg.forEach((column: any) => {
+        console.log('column.name', column.name);
+        console.log('column.allCards', column.allCards);
+      })
+      //     id: 1,
+      //     title: 'To do',
+      //     color: '#e92c62',
+      //     list:[
+      //       {
+      //         id: 1,
+      //         text: 'example card-item',
+      //         like: 1,
+      //         comments: [
+      //           {
+      //             id: 1,
+      //             text: 'some comment'
+      //           }
+      //         ]
+      //       }
+      //     ]
+      //   },
+    this.initBoard = boardArg;
+    this.board = this.initBoard;
+    this.board$ = new BehaviorSubject<any[]>(this.initBoard);
+    console.log('generate init board works');
+  }
+
+
   getBoard$(){
+    // console.log('this.coard', this.board);
     return this.board$.asObservable()
   }
   deleteCard(cardId: number, columnId: number) {
     this.board = this.board.map((column: any) => {
+      console.log('columnId', columnId, 'column.id', column.id)
       if(column.id === columnId) {
-        column.list = column.list.filter((card: any) => card.id!== cardId);
+        column.list = column.list.filter((card: any) => card.id !== cardId);
       }
       return column;
     });
     this.board$.next([...this.board]);
   }
-  deleteColumn(columnId:number) {
+  deleteColumn(columnId: number) {
     this.board = this.board.filter((column: any) => column.id !== columnId);
     this.board$.next([...this.board]);
   }
@@ -208,4 +250,6 @@ export class BoardService {
     });
     this.board$.next([...this.board]);
   }
+
+
 }
