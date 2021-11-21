@@ -33,10 +33,10 @@ export class BoardComponent implements OnInit {
     items = this.firebaseService.getBoardFromFirestore();
     console.log('items', items);
     this.boardService.generateInitBoard(items);
-
   }
   addColumn(event: string) {
     if(event){
+      // this.firebaseService.addColumnToFirestore(event);
       this.boardService.addColumn(event);
     }
   }
@@ -68,7 +68,7 @@ export class BoardComponent implements OnInit {
   onColorChange(color: string, columnId:number) {
     this.boardService.changeColumnColor(color, columnId);
   }
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<string[]>, colId: number) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -79,6 +79,15 @@ export class BoardComponent implements OnInit {
         event.currentIndex,
       );
     }
+    let moveditem= JSON.parse(JSON.stringify(event.container.data[event.currentIndex]));
+    const previousColumnId = event.previousContainer.element.nativeElement.id;
+    const currentColumnId = event.container.element.nativeElement.id;
+    this.firebaseService.updateCurrentColumnInFirestore(+currentColumnId, moveditem);
+    this.firebaseService.updatePreviousColumnInFirestore(+previousColumnId, moveditem);
+    console.log()
+    console.log('movedItem', moveditem);
+    console.log('previousId', previousColumnId);
+    console.log('currentId', currentColumnId);
   }
 
 }

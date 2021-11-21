@@ -13,6 +13,7 @@ import {FormsModule} from "@angular/forms";
 import { CommentItemComponent } from './comment-item/comment-item.component';
 import {DialogModule} from "../dialog/dialog.module";
 import { ColorPanelComponent } from './color-panel/color-panel.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -22,17 +23,18 @@ import { ColorPanelComponent } from './color-panel/color-panel.component';
     CommentItemComponent,
     ColorPanelComponent,
   ],
-  imports: [
-    CommonModule,
-    DragDropModule,
-    MatInputModule,
-    MatIconModule,
-    MatButtonModule,
-    DragDropModule,
-    MatExpansionModule,
-    FormsModule,
-    DialogModule
-  ],
+    imports: [
+        CommonModule,
+        DragDropModule,
+        MatInputModule,
+        MatIconModule,
+        MatButtonModule,
+        DragDropModule,
+        MatExpansionModule,
+        FormsModule,
+        DialogModule,
+        MatDialogModule
+    ],
   exports: [
     BoardComponent
   ]

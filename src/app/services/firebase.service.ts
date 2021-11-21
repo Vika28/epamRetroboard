@@ -66,6 +66,18 @@ export class FirebaseService {
   getUsername(uid : string) {
     return (this.firebaseFirestore.doc(`board/${uid}`).get())
   }
+  async addColumnToFirestore(columnName: string, columnId:number) {
+    // const columnId = Date.now();
+    let currentColumnRef = this.firebaseFirestore.doc(`board/${columnId}`);
+    let columnCards: Array<{'id': number, 'text': string, 'like': number}>;
+    await currentColumnRef
+      .set({
+        id: columnId,
+        title: columnName,
+        color: 'red',
+        list: [],
+      })
+  }
   async addCardToColumnFirestore(columnName: string, cardName: string, columnId: number) {
     let currentColumnRef = this.firebaseFirestore.doc(`board/${columnId}`);
     let columnCards: Array<{'id': number, 'text': string, 'like': number}>;
@@ -74,14 +86,18 @@ export class FirebaseService {
       .subscribe( {
         next(val) {
           columnCards = val.get('list');
-          if(columnCards == undefined) {
+          if(columnCards === undefined) {
+            // currentColumnRef
+            //   .set({
+            //       id: columnId,
+            //       title: columnName,
+            //       color: 'red',
+            //       list: [{'id': Date.now(), 'text': cardName, 'like': 0}],
+            //     })
             currentColumnRef
-              .set({
-                  id: columnId,
-                  title: columnName,
-                  color: 'red',
-                  list: [{'id': Date.now(), 'text': cardName, 'like': 0}],
-                })
+              .update({
+                list: [{'id': Date.now(), 'text': cardName, 'like': 0}],
+              })
           } else {
 
             currentColumnRef
@@ -98,6 +114,66 @@ export class FirebaseService {
           console.log('done');
         }
       }
+      );
+  }
+  async updateCurrentColumnInFirestore(columnId: number, newCard: {
+    'id': number, 'text': string, 'like': number
+  }) {
+    let currentColumnRef = this.firebaseFirestore.doc(`board/${columnId}`);
+    let columnCards: Array<{'id': number, 'text': string, 'like': number}>;
+    await currentColumnRef
+      .get()
+      .subscribe( {
+          next(val) {
+            columnCards = val.get('list');
+            // columnCards = columnCards.filter((card) => {
+            //   return card.id !== newCard.id
+            // })
+              currentColumnRef
+                .update({
+                  // list: [...columnCards],
+                  list: [...columnCards, {'id': newCard.id, 'text': newCard.text, 'like': newCard.like}],
+                })
+
+            console.log('list', columnCards);
+          },
+          error(err) {
+            console.error('something wrong occurred: ' + err);
+          },
+          complete() {
+            console.log('done');
+          }
+        }
+      );
+  }
+  async updatePreviousColumnInFirestore(columnId: number, newCard: {
+    'id': number, 'text': string, 'like': number
+  }) {
+    let currentColumnRef = this.firebaseFirestore.doc(`board/${columnId}`);
+    let columnCards: Array<{'id': number, 'text': string, 'like': number}>;
+    await currentColumnRef
+      .get()
+      .subscribe( {
+          next(val) {
+            columnCards = val.get('list');
+            columnCards = columnCards.filter((card) => {
+              return card.id !== newCard.id
+            })
+            currentColumnRef
+              .update({
+                list: [...columnCards],
+                // list: [...columnCards, {'id': newCard.id, 'text': newCard.text, 'like': newCard.like}],
+              })
+
+            console.log('list', columnCards);
+          },
+          error(err) {
+            console.error('something wrong occurred: ' + err);
+          },
+          complete() {
+            console.log('done');
+          }
+        }
       );
   }
   async deleteColumnFromFirestore(columnId: number){

@@ -57,9 +57,10 @@ export class BoardService implements OnInit {
     this.board$.next([...this.board]);
   }
   addColumn(title: string) {
-    // this.firebaseService.addColumnToFirestore(title);
+    const id = Date.now();
+    this.firebaseService.addColumnToFirestore(title, id);
     const newColumn: any = {
-      id: Date.now(),
+      id: id,
       title: title,
       color: '#009886',
       list: []
