@@ -7,9 +7,7 @@ import {AngularFirestore} from "@angular/fire/compat/firestore";
 /**
  * @title Drag&Drop connected sorting
  */
-// @NgModule({
-//   imports: [ CommonModule ]
-// })
+
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
@@ -32,24 +30,8 @@ export class BoardComponent implements OnInit {
         list: {},
         color: string}
       > = [];
-    // let items: unknown;
-    this.firebaseFirestore.collection("board")
-      .get()
-      .subscribe((ss) => {
-        let docArr: unknown;
-
-        ss.docs.forEach((doc) => {
-
-          docArr = doc.data();
-          items.push({
-            id: doc.get('id'),
-            title: doc.get('title'),
-            list: doc.get('list'),
-            color: doc.get('color')
-          })
-        });
-      });
-    console.log(items);
+    items = this.firebaseService.getBoardFromFirestore();
+    console.log('items', items);
     this.boardService.generateInitBoard(items);
 
   }

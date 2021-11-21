@@ -135,6 +135,31 @@ export class FirebaseService {
   //
   //   return isAuthenticated;
   // }
+  getBoardFromFirestore(){
+    let items: Array<
+      {id: number,
+        title: string,
+        list: {},
+        color: string}
+      > = [];
+    this.firebaseFirestore.collection("board")
+      .get()
+      .subscribe((ss) => {
+        let docArr: unknown;
+
+        ss.docs.forEach((doc) => {
+
+          docArr = doc.data();
+          items.push({
+            id: doc.get('id'),
+            title: doc.get('title'),
+            list: doc.get('list'),
+            color: doc.get('color')
+          })
+        });
+      });
+    return items;
+  }
   logout() {
     this.firebaseAuth.signOut();
     localStorage.removeItem('user');
