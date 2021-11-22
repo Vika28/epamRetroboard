@@ -4,6 +4,7 @@ import {BoardService} from "../../../services/board.service";
 import {CommonModule} from "@angular/common";
 import {FirebaseService} from "../../../services/firebase.service";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
+import {AngularFireAuth} from "@angular/fire/compat/auth";
 /**
  * @title Drag&Drop connected sorting
  */
@@ -18,7 +19,8 @@ export class BoardComponent implements OnInit {
   constructor(
     public boardService: BoardService,
     public firebaseService: FirebaseService,
-    public firebaseFirestore: AngularFirestore
+    public firebaseFirestore: AngularFirestore,
+    public firebaseAuth: AngularFireAuth
   ) {
   }
 
@@ -47,7 +49,27 @@ export class BoardComponent implements OnInit {
   }
   onChangeLike(event: {card: any, increase: boolean}, columnId: number) {
     const {card: { id }, increase} = event;
-    this.boardService.changeLike(id, columnId, increase)
+    let userId;
+    let t;
+    this.firebaseService.getCurrentUser()
+      .then((res) => {
+        userId = res;
+        console.log('userId from compon', res);
+
+        // t = this.firebaseService.changeLikeInCard(id, columnId, userId)
+        //   .then((res) => {
+        //     console.log('res from then', res);
+        //   })
+        //   console.log('res from function', t);
+
+      });
+    // console.log('t', t);
+    console.log('columnId', columnId);
+
+    t = this.firebaseService.getBoardFromFirestore1(id, columnId);
+    console.log('t', t);
+
+    this.boardService.changeLike(id, columnId, increase, userId)
   }
   onAddComment(event: {id: number, text: string}, columnId: number) {
     this.boardService.addComment(columnId, event.id, event.text);

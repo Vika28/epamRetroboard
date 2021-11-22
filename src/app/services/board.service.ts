@@ -68,27 +68,44 @@ export class BoardService implements OnInit {
     this.board = [...this.board, newColumn];
     this.board$.next([...this.board]);
   }
-  changeLike(cardId: number, columnId: number, increase: boolean){
-    this.board = this.board.map((column: any) => {
-      if(column.id === columnId) {
-        const list = column.list.map((card: any) => {
-          if(card.id === cardId) {
-            if(increase) {
-              card.like++;
-            } else {
-              if(card.like > 0) {
-                card.like--;
-              }
-            }
-          }
-          return card;
-        });
-        column.list = list;
-        return column;
-      } else {
-        return column;
-      }
-    });
+  changeLike(cardId: number, columnId: number, increase: boolean, userId: any){
+    // this.board = this.board.map((column: any) => {
+    //   if(column.id === columnId) {
+    //     const list = column.list.map((card: any) => {
+    //       if(card.id === cardId) {
+    //         card.like = userId;
+    //         // if(increase) {
+    //         //   card.like++;
+    //         // } else {
+    //         //   // if(card.like > 0) {
+    //         //   //   card.like--;
+    //         //   // }
+    //         // }
+    //       }
+    //       return card;
+    //     });
+    //     column.list = list;
+    //     return column;
+    //   } else {
+    //     return column;
+    //   }
+    // });
+
+    // this.board = this.board.map((column: any) => {
+    //   if(column.id === columnId) {
+    //     const list = column.list.map((card: any) => {
+    //       if(card.id === cardId) {
+    //
+    //       }
+    //       return card;
+    //     });
+    //     column.list = list;
+    //     return column;
+    //   } else {
+    //     return column;
+    //   }
+    // });
+
     this.board$.next([...this.board]);
   }
   addComment(columnId: number, cardId: number, text: string) {
