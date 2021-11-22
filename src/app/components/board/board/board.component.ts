@@ -72,9 +72,11 @@ export class BoardComponent implements OnInit {
     this.boardService.changeLike(id, columnId, increase, userId)
   }
   onAddComment(event: {id: number, text: string}, columnId: number) {
+    this.firebaseService.addCommentToFirestore(columnId, event.id, event.text);
     this.boardService.addComment(columnId, event.id, event.text);
   }
   onDeleteComment(comment: any, columnId: number, item: any){
+    this.firebaseService.deleteCommentFromFirestore(columnId, item.id, comment.id);
     this.boardService.deleteComment(columnId, item.id, comment.id)
   }
   onDeleteColumn(columnId: number, columnName: string) {
