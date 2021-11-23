@@ -44,8 +44,10 @@ export class BoardComponent implements OnInit {
   }
   onDeleteCard(cardId: number, columnId: number, columnName: string, cardName: string, cardId1: number) {
     this.firebaseService.deleteCardFromColumnFirestore(columnId, cardId1);
-    console.log('cardId', cardId);
-    this.boardService.deleteCard(cardId1, columnId);
+    // this.firebaseService.deleteCardFromColumnFirestore(cardId, columnId);
+    console.log('event', cardId);
+    console.log('cardId', cardId1);
+    this.boardService.deleteCard(cardId, columnId);
   }
   onChangeLike(event: {card: any, increase: boolean}, columnId: number) {
     const {card: { id }, increase} = event;
@@ -72,7 +74,7 @@ export class BoardComponent implements OnInit {
     this.boardService.changeLike(id, columnId, increase, userId)
   }
   onAddComment(event: {id: number, text: string}, columnId: number) {
-    this.firebaseService.addCommentToFirestore(columnId, event.id, event.text);
+    // this.firebaseService.addCommentToFirestore(columnId, event.id, event.text);
     this.boardService.addComment(columnId, event.id, event.text);
   }
   onDeleteComment(comment: any, columnId: number, item: any){
@@ -85,8 +87,9 @@ export class BoardComponent implements OnInit {
   }
   onAddCard(cardName: string, columnId: number, columnName: string) {
     if(cardName) {
-      this.boardService.addCard(cardName, columnId);
-      this.firebaseService.addCardToColumnFirestore(columnName, cardName, columnId);
+      // this.firebaseService.addCardToColumnFirestore(columnName, cardName, columnId);
+      this.boardService.addCard(cardName, columnId, columnName);
+
     }
   }
   onColorChange(color: string, columnId:number) {
@@ -108,7 +111,7 @@ export class BoardComponent implements OnInit {
     const currentColumnId = event.container.element.nativeElement.id;
     this.firebaseService.updateCurrentColumnInFirestore(+currentColumnId, moveditem);
     this.firebaseService.updatePreviousColumnInFirestore(+previousColumnId, moveditem);
-    console.log()
+    console.log();
     console.log('movedItem', moveditem);
     console.log('previousId', previousColumnId);
     console.log('currentId', currentColumnId);

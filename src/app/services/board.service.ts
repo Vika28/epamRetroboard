@@ -41,9 +41,10 @@ export class BoardService implements OnInit {
     this.board = this.board.filter((column: any) => column.id !== columnId);
     this.board$.next([...this.board]);
   }
-  addCard(text: string, columnId: number) {
+  addCard(text: string, columnId: number, columnName: string) {
     const newCard: any = {
       id: Date.now(),
+      // id: cardId,
       text,
       like: 0,
       comments: [],
@@ -54,6 +55,7 @@ export class BoardService implements OnInit {
       }
       return column;
     });
+    this.firebaseService.addCardToColumnFirestore(columnName, text, columnId, newCard.id);
     this.board$.next([...this.board]);
   }
   addColumn(title: string) {
@@ -109,12 +111,14 @@ export class BoardService implements OnInit {
     this.board$.next([...this.board]);
   }
   addComment(columnId: number, cardId: number, text: string) {
+    const commentId: number = Date.now();
     this.board = this.board.map((column: any) => {
+
       if(column.id === columnId) {
         const list = column.list.map((card: any) => {
           if(card.id === cardId) {
             const newComment = {
-              id: Date.now(),
+              id: commentId,
               text,
             };
             card.comments = [newComment, ...card.comments];
@@ -125,6 +129,7 @@ export class BoardService implements OnInit {
       }
       return column;
     });
+    this.firebaseService.addCommentToFirestore(columnId, cardId, text, commentId);
     this.board$.next([...this.board]);
   }
   deleteComment(columnId: number, itemId: number, commentId: number) {
