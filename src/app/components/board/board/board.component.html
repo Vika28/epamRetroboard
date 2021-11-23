@@ -1,19 +1,21 @@
 <div class="container-fluid">
-  <app-logout></app-logout>
-  <div>
-    <app-dialog
-      (emitText) = addColumn($event)
-      question="Add new column"
-    >
-      <button
-        mat-raised-button
-        color="primary"
+  <div class="d-flex justify-content-between">
+    <div>
+      <app-dialog
+        (emitText) = addColumn($event)
+        question="Add new column"
       >
-        New column
-      </button>
+        <button
+          mat-raised-button
+          color="primary"
+        >
+          New column
+        </button>
 
-    </app-dialog>
+      </app-dialog>
 
+    </div>
+    <app-logout></app-logout>
   </div>
   <hr>
   <div cdkDropListGroup class="row">
