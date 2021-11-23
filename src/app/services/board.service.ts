@@ -75,7 +75,6 @@ export class BoardService implements OnInit {
       if(column.id === columnId) {
         const list = column.list.map((card: any) => {
           if(card.id === cardId) {
-            // card.like = userId;
             if(increase) {
               card.like.length++;
             } else {
@@ -92,22 +91,6 @@ export class BoardService implements OnInit {
         return column;
       }
     });
-
-    // this.board = this.board.map((column: any) => {
-    //   if(column.id === columnId) {
-    //     const list = column.list.map((card: any) => {
-    //       if(card.id === cardId) {
-    //
-    //       }
-    //       return card;
-    //     });
-    //     column.list = list;
-    //     return column;
-    //   } else {
-    //     return column;
-    //   }
-    // });
-
     this.board$.next([...this.board]);
   }
   addComment(columnId: number, cardId: number, text: string) {
@@ -158,6 +141,4 @@ export class BoardService implements OnInit {
     });
     this.board$.next([...this.board]);
   }
-
-
 }

@@ -6,13 +6,15 @@ import {FormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
 import {MatDialogModule} from "@angular/material/dialog";
+import {ColorPanelComponent} from "../board/color-panel/color-panel.component";
 
 
 
 @NgModule({
   declarations: [
     DialogComponent,
-    DialogBodyComponent
+    DialogBodyComponent,
+    // ColorPanelComponent
   ],
   imports: [
     CommonModule,

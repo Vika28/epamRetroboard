@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import {DialogBodyComponent} from "../dialog-body/dialog-body.component";
+import {BoardService} from "../../../services/board.service";
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
@@ -9,7 +10,7 @@ import {DialogBodyComponent} from "../dialog-body/dialog-body.component";
 export class DialogComponent implements OnInit {
   @Output() emitText: EventEmitter<any> = new EventEmitter();
   @Input() question: string | undefined;
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, public boardService: BoardService) { }
 
   ngOnInit(): void {
   }
@@ -23,5 +24,7 @@ export class DialogComponent implements OnInit {
       this.emitText.emit(result);
     })
   }
+
+
 
 }

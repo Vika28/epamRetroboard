@@ -56,25 +56,11 @@ export class BoardComponent implements OnInit {
     this.firebaseService.getCurrentUser()
       .then((res) => {
         userId = res;
-        console.log('userId from compon', res);
 
         this.firebaseService.changeLikeInCard(id, columnId, userId, (increase: boolean)=> {
           this.boardService.changeLike(id, columnId, increase, userId)
-          console.log('+++++', increase);
-
         })
-        //   .then((res) => {
-        //     console.log('res from then', res);
-        //   })
-        //   console.log('res from function', t);
-
       });
-    // console.log('t', t);
-    console.log('columnId', columnId);
-
-    console.log('t', t);
-
-    // this.boardService.changeLike(id, columnId, increase, userId)
   }
   onAddComment(event: {id: number, text: string}, columnId: number) {
     // this.firebaseService.addCommentToFirestore(columnId, event.id, event.text);
@@ -96,8 +82,10 @@ export class BoardComponent implements OnInit {
     }
   }
   onColorChange(color: string, columnId:number) {
+    this.firebaseService.updateColumnColorInFirestore(color, columnId);
     this.boardService.changeColumnColor(color, columnId);
   }
+
   drop(event: CdkDragDrop<string[]>, colId: number) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);

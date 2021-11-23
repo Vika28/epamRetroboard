@@ -52,7 +52,7 @@ export class FirebaseService {
       .set({
         id: columnId,
         title: columnName,
-        color: 'red',
+        color: '#009886',
         list: []
         // list: {id: 0, text: '', like: [], comments: []}
       })
@@ -368,6 +368,31 @@ export class FirebaseService {
               .update({
                 list: [...columnCards, {'id': currentCard.id, 'text': currentCard.text, 'like': currentCard.like, 'comments': [...currentCardComments]}],
               });
+          },
+          error(err) {
+            console.error('something wrong occurred: ' + err);
+          },
+          complete() {
+            console.log('done');
+          }
+        }
+      );
+  }
+  async updateColumnColorInFirestore(color: string, columnId: number) {
+    let currentColumnRef = this.firebaseFirestore.doc(`board/${columnId}`);
+    let columnCards: Array<{'id': number, 'text': string, 'like': [], 'comments': []}>;
+    await currentColumnRef
+      .get()
+      .subscribe( {
+          next(val) {
+            columnCards = val.get('color');
+            currentColumnRef
+              .update({
+                // list: [...columnCards],
+                color: color,
+              })
+
+            console.log('list', columnCards);
           },
           error(err) {
             console.error('something wrong occurred: ' + err);
