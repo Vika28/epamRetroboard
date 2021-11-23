@@ -1,12 +1,12 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 enum colors {
-  RED = 'red',
-  GREEN = 'green',
-  BLUE = 'blue',
-  VIOLET = 'purple',
-  YELLOW = 'yellow',
-  PINK = 'pink'
+  RED = "#e92c64",
+  GREEN = "#009886",
+  BLUE = "#208eed",
+  VIOLET = "#912f84",
+  YELLOW = "#b36619",
+  PINK = "#6e1d96"
 }
 @Component({
   selector: 'app-color-panel',
