@@ -51,14 +51,18 @@ export class BoardComponent implements OnInit {
   }
   onChangeLike(event: {card: any, increase: boolean}, columnId: number) {
     const {card: { id }, increase} = event;
-    let userId;
+    let userId: any;
     let t;
     this.firebaseService.getCurrentUser()
       .then((res) => {
         userId = res;
         console.log('userId from compon', res);
 
-        // t = this.firebaseService.changeLikeInCard(id, columnId, userId)
+        this.firebaseService.changeLikeInCard(id, columnId, userId, (increase: boolean)=> {
+          this.boardService.changeLike(id, columnId, increase, userId)
+          console.log('+++++', increase);
+
+        })
         //   .then((res) => {
         //     console.log('res from then', res);
         //   })
@@ -68,10 +72,9 @@ export class BoardComponent implements OnInit {
     // console.log('t', t);
     console.log('columnId', columnId);
 
-    t = this.firebaseService.getBoardFromFirestore1(id, columnId);
     console.log('t', t);
 
-    this.boardService.changeLike(id, columnId, increase, userId)
+    // this.boardService.changeLike(id, columnId, increase, userId)
   }
   onAddComment(event: {id: number, text: string}, columnId: number) {
     // this.firebaseService.addCommentToFirestore(columnId, event.id, event.text);

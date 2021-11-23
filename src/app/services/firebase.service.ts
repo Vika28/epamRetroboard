@@ -57,37 +57,38 @@ export class FirebaseService {
         // list: {id: 0, text: '', like: [], comments: []}
       })
   }
-  changeLikeInCard(cardId: number, columnId: number, userId: any) {
+  async changeLikeInCard(cardId: number, columnId: number, userId: any, func: (val: boolean) => void) {
     console.log('user', userId);
     let currentColumnRef = this.firebaseFirestore.doc(`board/${columnId}`);
-    let columnCards: Array<{'id': number, 'text': string, 'like': []}>;
-    let allCards: Array<{'id': number, 'text': string, 'like': []}>;
-    let currentCard: {'id': number, 'text': string, 'like': []};
+    let columnCards: Array<{'id': number, 'text': string, 'like': [], comments: []}>;
+    let allCards: Array<{'id': number, 'text': string, 'like': [], comments: []}>;
+    let currentCard: {'id': number, 'text': string, 'like': [], comments: []};
     let arrWithLikedId: string[];
 
-    currentColumnRef
+    await currentColumnRef
       .get()
       .subscribe({
           next(val) {
 
             columnCards = val.get('list');
-            allCards = val.get('list');
+            columnCards.forEach((card) => {
+              if(cardId === card.id) {
+                currentCard = card;
+              }
+            })
             columnCards = columnCards.filter((card) => {
               return cardId !== card.id;
             })
-            allCards = allCards.filter((card) => {
-              return cardId === card.id;
-            })
-            currentCard = allCards[0];
             arrWithLikedId = currentCard.like;
-
             if (!arrWithLikedId.includes(userId)) {
               arrWithLikedId.push(userId);
               console.log('not include', arrWithLikedId);
               currentColumnRef
                 .update({
-                  list: [...columnCards, {'id': cardId, 'text': currentCard.text, 'like': arrWithLikedId}],
+                  list: [...columnCards, {'id': cardId, 'text': currentCard.text, 'like': arrWithLikedId, 'comments': currentCard.comments}],
                 })
+              func(true);
+
               return 'not';
             } else {
               arrWithLikedId = arrWithLikedId.filter((item) => {
@@ -96,8 +97,9 @@ export class FirebaseService {
               console.log(' include', arrWithLikedId);
               currentColumnRef
                 .update({
-                  list: [...columnCards, {'id': currentCard.id, 'text': currentCard.text, 'like': arrWithLikedId}],
+                  list: [...columnCards, {'id': currentCard.id, 'text': currentCard.text, 'like': arrWithLikedId, 'comments': currentCard.comments}],
                 });
+              func(false);
               return 'yes';
             }
             // console.log('list', columnCards);
@@ -250,7 +252,7 @@ export class FirebaseService {
     let items: Array<
       {id: number,
         title: string,
-        list: {},
+        list: Array<{'id': number, 'text': string, 'like': [], 'comments': []}>,
         color: string}
       > = [];
     this.firebaseFirestore.collection("board")
@@ -274,9 +276,9 @@ export class FirebaseService {
 
   getBoardFromFirestore1(cardId: number, columnId: number){
     let currentColumnRef = this.firebaseFirestore.doc(`board/${columnId}`);
-    let columnCards: Array<{'id': number, 'text': string, 'like': []}>;
-    let allCards: Array<{'id': number, 'text': string, 'like': []}>;
-    let currentCard: {'id': number, 'text': string, 'like': []};
+    let columnCards: Array<{'id': number, 'text': string, 'like': [], 'comments': []}>;
+    let allCards: Array<{'id': number, 'text': string, 'like': [], 'comments': []}>;
+    let currentCard: {'id': number, 'text': string, 'like': [], 'comments': []};
     let arrWithLikedId: string[];
     this.firebaseFirestore.doc(`board/${columnId}`)
       .get()

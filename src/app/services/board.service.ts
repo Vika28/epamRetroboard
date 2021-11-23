@@ -11,7 +11,7 @@ export class BoardService implements OnInit {
   constructor(private firebaseService: FirebaseService,
               public firebaseFirestore: AngularFirestore
               ) { }
-  private initBoard: Column[] = [];
+  private initBoard: any[] = [];
   private board: any[] = this.initBoard;
   private board$ = new BehaviorSubject<any[]>(this.initBoard);
   ngOnInit(): void {
@@ -46,7 +46,7 @@ export class BoardService implements OnInit {
       id: Date.now(),
       // id: cardId,
       text,
-      like: 0,
+      like: [],
       comments: [],
     };
     this.board = this.board.map((column: any) => {
@@ -71,27 +71,27 @@ export class BoardService implements OnInit {
     this.board$.next([...this.board]);
   }
   changeLike(cardId: number, columnId: number, increase: boolean, userId: any){
-    // this.board = this.board.map((column: any) => {
-    //   if(column.id === columnId) {
-    //     const list = column.list.map((card: any) => {
-    //       if(card.id === cardId) {
-    //         card.like = userId;
-    //         // if(increase) {
-    //         //   card.like++;
-    //         // } else {
-    //         //   // if(card.like > 0) {
-    //         //   //   card.like--;
-    //         //   // }
-    //         // }
-    //       }
-    //       return card;
-    //     });
-    //     column.list = list;
-    //     return column;
-    //   } else {
-    //     return column;
-    //   }
-    // });
+    this.board = this.board.map((column: any) => {
+      if(column.id === columnId) {
+        const list = column.list.map((card: any) => {
+          if(card.id === cardId) {
+            // card.like = userId;
+            if(increase) {
+              card.like.length++;
+            } else {
+              if(card.like.length > 0) {
+                card.like.length--;
+              }
+            }
+          }
+          return card;
+        });
+        column.list = list;
+        return column;
+      } else {
+        return column;
+      }
+    });
 
     // this.board = this.board.map((column: any) => {
     //   if(column.id === columnId) {
