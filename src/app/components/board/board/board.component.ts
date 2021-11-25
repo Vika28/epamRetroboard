@@ -63,8 +63,9 @@ export class BoardComponent implements OnInit {
       });
   }
   onAddComment(event: {id: number, text: string}, columnId: number) {
-    // this.firebaseService.addCommentToFirestore(columnId, event.id, event.text);
-    this.boardService.addComment(columnId, event.id, event.text);
+    if(event.text !== ' ') {
+      this.boardService.addComment(columnId, event.id, event.text);
+    }
   }
   onDeleteComment(comment: any, columnId: number, item: any){
     this.firebaseService.deleteCommentFromFirestore(columnId, item.id, comment.id);
@@ -75,8 +76,10 @@ export class BoardComponent implements OnInit {
     this.boardService.deleteColumn(columnId);
   }
   onAddCard(cardName: string, columnId: number, columnName: string) {
-    if(cardName) {
+    console.log('cardName', cardName)
+    if(cardName !== undefined) {
       // this.firebaseService.addCardToColumnFirestore(columnName, cardName, columnId);
+      console.log('enter')
       this.boardService.addCard(cardName, columnId, columnName);
 
     }

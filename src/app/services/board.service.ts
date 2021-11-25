@@ -44,7 +44,6 @@ export class BoardService implements OnInit {
   addCard(text: string, columnId: number, columnName: string) {
     const newCard: any = {
       id: Date.now(),
-      // id: cardId,
       text,
       like: [],
       comments: [],
