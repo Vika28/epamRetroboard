@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - '10'
+before_install:
+  - npm install -g @angular/cli
+install: npm install
+
+branches:
+  only:
+    - main
+
+deploy:
+  provider: heroku
+  app: epam-retroboard
+  api_key:
+    secure: 1496c92a-8690-4156-8b29-855773bf9f58
