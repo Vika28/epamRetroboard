@@ -8,12 +8,13 @@ import {StartPageComponent} from "./components/start-page/start-page.component";
 import {AppComponent} from "./app.component";
 import { AngularFireAuthGuard, redirectLoggedInTo, redirectUnauthorizedTo } from '@angular/fire/compat/auth-guard';
 
-const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
+const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['sign-in']);
 const redirectLoggedInToSendEmail = () => redirectLoggedInTo(['board']);
 const routes: Routes = [
   { path: '',
     component: StartPageComponent,
     data: { authGuardPipe: redirectLoggedInToSendEmail }},
+    // data: { authGuardPipe: redirectLoggedInToSendEmail }},
 
   { path: 'sign-in',
     component: SignInComponent,
@@ -25,7 +26,7 @@ const routes: Routes = [
 
   { path: 'board',
     component: BoardComponent,
-    canActivate:[AuthGuard] }
+    canActivate: [AuthGuard] }
   // { path: 'board', component: BoardComponent }
 ];
 
