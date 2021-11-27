@@ -30,7 +30,7 @@
         <button
           mat-icon-button
           class="icon-delete"
-          (click)="onDeleteColumn(col.id, col.title)"
+          (click)="onDeleteColumn(col.id)"
         >
           <mat-icon style="font-size: 20px;">delete</mat-icon>
         </button>
@@ -53,7 +53,7 @@
         [cdkDropListData]="col.list"
         class="example-list"
         [id]="col.id"
-        (cdkDropListDropped)="drop($event, col.id)"
+        (cdkDropListDropped)="drop($event)"
       >
           <div
             cdkDrag

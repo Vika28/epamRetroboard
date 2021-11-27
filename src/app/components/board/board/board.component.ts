@@ -24,7 +24,6 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('onInitWorks');
     let items: Array<
       {id: number,
         title: string,
@@ -32,30 +31,23 @@ export class BoardComponent implements OnInit {
         color: string}
       > = [];
     items = this.firebaseService.getBoardFromFirestore();
-    console.log('items', items);
     this.boardService.generateInitBoard(items);
   }
   addColumn(event: string) {
     if(event){
-      // this.firebaseService.addColumnToFirestore(event);
       this.boardService.addColumn(event);
     }
   }
   onDeleteCard(cardId: number, columnId: number, columnName: string, cardName: string, cardId1: number) {
     this.firebaseService.deleteCardFromColumnFirestore(columnId, cardId1);
-    // this.firebaseService.deleteCardFromColumnFirestore(cardId, columnId);
-    console.log('event', cardId);
-    console.log('cardId', cardId1);
     this.boardService.deleteCard(cardId, columnId);
   }
   onChangeLike(event: {card: any, increase: boolean}, columnId: number) {
     const {card: { id }, increase} = event;
     let userId: any;
-    let t;
     this.firebaseService.getCurrentUser()
       .then((res) => {
         userId = res;
-
         this.firebaseService.changeLikeInCard(id, columnId, userId, (increase: boolean)=> {
           this.boardService.changeLike(id, columnId, increase, userId)
         })
@@ -70,7 +62,7 @@ export class BoardComponent implements OnInit {
     this.firebaseService.deleteCommentFromFirestore(columnId, item.id, comment.id);
     this.boardService.deleteComment(columnId, item.id, comment.id)
   }
-  onDeleteColumn(columnId: number, columnName: string) {
+  onDeleteColumn(columnId: number) {
     this.firebaseService.deleteColumnFromFirestore(columnId);
     this.boardService.deleteColumn(columnId);
   }
@@ -86,7 +78,7 @@ export class BoardComponent implements OnInit {
     this.boardService.changeColumnColor(color, columnId);
   }
 
-  drop(event: CdkDragDrop<string[]>, colId: number) {
+  drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -102,10 +94,6 @@ export class BoardComponent implements OnInit {
     const currentColumnId = event.container.element.nativeElement.id;
     this.firebaseService.updateCurrentColumnInFirestore(+currentColumnId, moveditem);
     this.firebaseService.updatePreviousColumnInFirestore(+previousColumnId, moveditem);
-    console.log();
-    console.log('movedItem', moveditem);
-    console.log('previousId', previousColumnId);
-    console.log('currentId', currentColumnId);
   }
 
 }

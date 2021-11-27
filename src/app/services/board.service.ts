@@ -21,7 +21,6 @@ export class BoardService implements OnInit {
     this.initBoard = boardArg;
     this.board = this.initBoard;
     this.board$ = new BehaviorSubject<any[]>(this.initBoard);
-    console.log('generate init board works');
   }
 
   getBoard$(){
@@ -29,7 +28,6 @@ export class BoardService implements OnInit {
   }
   deleteCard(cardId: number, columnId: number) {
     this.board = this.board.map((column: any) => {
-      console.log('columnId', columnId, 'column.id', column.id)
       if(column.id === columnId) {
         column.list = column.list.filter((card: any) => card.id !== cardId);
       }
