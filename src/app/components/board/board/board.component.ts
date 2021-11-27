@@ -1,7 +1,6 @@
 import {Component, NgModule, OnInit} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {BoardService} from "../../../services/board.service";
-import {CommonModule} from "@angular/common";
 import {FirebaseService} from "../../../services/firebase.service";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
@@ -63,7 +62,7 @@ export class BoardComponent implements OnInit {
       });
   }
   onAddComment(event: {id: number, text: string}, columnId: number) {
-    if(event.text !== ' ') {
+    if(event.text.trim() !== '') {
       this.boardService.addComment(columnId, event.id, event.text);
     }
   }
@@ -76,12 +75,10 @@ export class BoardComponent implements OnInit {
     this.boardService.deleteColumn(columnId);
   }
   onAddCard(cardName: string, columnId: number, columnName: string) {
-    console.log('cardName', cardName)
     if(cardName !== undefined) {
-      // this.firebaseService.addCardToColumnFirestore(columnName, cardName, columnId);
-      console.log('enter')
-      this.boardService.addCard(cardName, columnId, columnName);
-
+      if(cardName.trim() !== ''){
+        this.boardService.addCard(cardName, columnId, columnName);
+      }
     }
   }
   onColorChange(color: string, columnId:number) {
